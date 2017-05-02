@@ -7,19 +7,19 @@ public class Drive {
     public static Connection Connect(){
 
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sys" + "?user=root&password=2010rockS&useSSL=false");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/sys" +
+                    "?user=root&password=2010rockS&useSSL=false");
             return conn;
         }
         catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
             return null;
         }
-
     }
+
     public static void main(String[] args) {
         try {
             // 1. get a connection
-//            Connection myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sys" + "?user=root&password=2010rockS&useSSL=false");
             Drive myConn = new Drive();
             Statement myStmt = myConn.Connect().createStatement();
             // 2. create a statement
