@@ -43,12 +43,8 @@ public class Drive {
 
             // Query 2. Available movie times for 'Get Out' movie
             ResultSet movieTimes = myStmt.executeQuery("SELECT Theater_Name, Location, Title, Movie_Time\n" +
-                    "FROM THEATRE NATURAL JOIN (\n" +
-                    "\tSELECT *\n" +
-                    "\tFROM SHOWS NATURAL JOIN MOVIE\n" +
-                    "\tWHERE Title = 'Get Out'\n" +
-                    ") AS G\n" +
-                    "ORDER BY Movie_Time");
+                    "FROM THEATRE NATURAL JOIN (SELECT * FROM SHOWS NATURAL JOIN " +
+                    "MOVIE WHERE Title = 'Get Out') AS G ORDER BY Movie_Time");
 
             System.out.println("\n\n");
             System.out.println("Available movie times for 'Get Out' movie");
@@ -138,5 +134,7 @@ public class Drive {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
     }
 }

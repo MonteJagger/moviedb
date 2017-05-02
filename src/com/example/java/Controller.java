@@ -1,5 +1,6 @@
 package com.example.java;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -43,6 +44,8 @@ public class Controller implements Initializable {
         } else if (event.getSource() == movieBut){// if movies butt is clicked go to movieInfo.fxml
             stage = (Stage) movieBut.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("movieInfo.fxml"));
+
+
         } else if (event.getSource() == theaterBut) {// if theater butt is clicked go to theater
             // .fxml
             stage = (Stage) theaterBut.getScene().getWindow();
@@ -93,6 +96,28 @@ public class Controller implements Initializable {
                 moviesdb.add(m);
 
                 Hyperlink h = new Hyperlink(m.getTitle()); // title link
+
+                // when the hyperlink is clicked
+                h.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+                        movieList.getChildren().clear(); // clear the list the is already there
+
+                        try {
+                            // create the ResultSet
+                            ResultSet showTimes = myStmt.executeQuery("SELECT Theater_Name, " + "Location, Title, Movie_Time FROM THEATRE NATURAL JOIN (SELECT * FROM SHOWS NATURAL JOIN MOVIE WHERE Title = '"+ m.getTitle() + "') AS G ORDER BY Movie_Time");
+
+                            movieList.getChildren().add(new Text(m.getTitle() + "\n\n")); // print the title of the movie
+
+                            while (showTimes.next()) {
+                                movieList.getChildren().add(new Text("Time: " + showTimes.getTime("Movie_Time") +"\n" + "Theater: " + showTimes.getString("Theater_Name") + "\n" + "Showing Time: " + showTimes.getString("Location") + "\n\n"));
+                            }
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                });
+
                 Text t = new Text("\nRated: " + m.getRating() + "\nReleased: " + m.getDate());
                 h.setId(m.getTitle());
                 Button deleteBut = new Button("Delete");

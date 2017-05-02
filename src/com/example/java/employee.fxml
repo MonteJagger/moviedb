@@ -24,7 +24,8 @@
                         <Insets right="3.0" />
                      </padding>
                   </Button>
-                  <Button fx:id="movieBut" layoutX="30.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadDataFromDatabase" prefHeight="45.0" style="-fx-background-color: #8effe2; -fx-border-color: #8effe2; -fx-border-radius: 0;" text="Movies" />
+                  <Button fx:id="movieBut" layoutX="30.0" layoutY="10.0" mnemonicParsing="false"
+                          onAction="#handleButtonAction" prefHeight="45.0" style="-fx-background-color: #8effe2; -fx-border-color: #8effe2; -fx-border-radius: 0;" text="Movies" />
                   <Button fx:id="theaterBut" layoutX="153.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="45.0" style="-fx-background-color: #8effe2; -fx-border-color: #8effe2; -fx-border-radius: 0;" text="Theatres" />
                   <Button fx:id="employeeBut" layoutX="89.0" layoutY="10.0" mnemonicParsing="false" onAction="#loadDataFromDatabase" prefHeight="45.0" style="-fx-background-color: #8effe2; -fx-border-color: #8effe2; -fx-border-radius: 0;" text="Employees" />
                   <Region prefHeight="35.0" HBox.hgrow="ALWAYS" />
