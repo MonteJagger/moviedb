@@ -28,7 +28,7 @@ public class MovieController implements Initializable{
     Button homepageBut, movieBut, theaterBut, employeeBut, signUpBut, signInBut, searchBut;
     @FXML
     ComboBox searchChoice;
-    ObservableList<String> searchList = FXCollections.observableArrayList("Movies", "Theatre", "Location");
+    ObservableList<String> searchList = FXCollections.observableArrayList("Movies", "Location");
 
     // list IDs
     @FXML
@@ -77,6 +77,16 @@ public class MovieController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Loading...");
         searchChoice.setItems(searchList);
+
+        Drive myConn = new Drive(); // check connection
+        try {
+            Statement myStmt = myConn.Connect().createStatement(); // write query
+            allMovies(myStmt);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -166,7 +176,7 @@ public class MovieController implements Initializable{
 
     @FXML
     private void searchLocations(Statement myStmt, String location) {
-        System.out.println(location);
+        //Current movies and show times in #location
         try{
             ResultSet rs = myStmt.executeQuery("SELECT Theater_Name, Title, Movie_Time\n" +
                     "FROM MOVIE NATURAL JOIN (\n" +
@@ -177,12 +187,16 @@ public class MovieController implements Initializable{
                     "ORDER BY Theater_Name, Title, Movie_Time");
 
             movieList.getChildren().clear();
+
             while (rs.next()) {
+                String theaterName = rs.getString("Theater_Name");
+                String title = rs.getString("Title");
+                Time time = rs.getTime("Movie_Time");
 
+                movieList.getChildren().addAll(new Text("Theater: " + theaterName +"\n" +
+                                                "Title: " + title + "\n" +
+                                                "Time: " + time + "\n"));
             }
-
-
-
         }
         catch (Exception e) {
             e.printStackTrace();
