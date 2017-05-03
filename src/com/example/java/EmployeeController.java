@@ -84,7 +84,17 @@ public class EmployeeController implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Loading...");
         theaterChoice.setItems(theaterDrop);
-//        jobTypeChoice.setItems(jobTypeDrop);
+        jobTypeChoice.setItems(jobTypeDrop);
+
+
+        Drive myConn = new Drive(); // get connection
+        try {
+            Statement myStmt = myConn.Connect().createStatement();
+            allEmployees(myStmt);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // MOVIE PAGE FUNCTIONS
@@ -92,15 +102,25 @@ public class EmployeeController implements Initializable{
     private void handleEmployeePage(ActionEvent event) throws IOException, SQLException {
         Drive myConn = new Drive(); // check connection
         Statement myStmt = myConn.Connect().createStatement(); // write query
+        employeeBut.setOnAction(e -> allEmployees(myStmt));
 
-
-
+        if (theaterChoice.getValue() != null && jobTypeChoice.getValue() != null) {
+            String userTheaterChoice = (String) theaterChoice.getValue();
+            String userJobChoice = (String) jobTypeChoice.getValue();
+            searchBut.setOnAction(e -> searchEmployees(myStmt, userTheaterChoice, userJobChoice));
+        }
     }
 
     @FXML
     private void allEmployees(Statement myStmt) {
         try {
-
+            ResultSet rs = myStmt.executeQuery("SELECT * " + "FROM EMPLOYEE");
+            employeeList.getChildren().clear();
+            while (rs.next()) {
+                Text t = new Text("SSN: " + rs.getString("SSN") +"\nName:"+
+                        rs.getString("Name") + "\nJob type: " + rs.getString("Job_Type")+ "\n");
+                employeeList.getChildren().add(t);
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -134,35 +154,38 @@ public class EmployeeController implements Initializable{
     }
 
     private void getTheaterShowings(Statement myStmt, String movieTitle){
-        movieList.getChildren().clear(); // clear the list the is already there
-        try {
-            // create the ResultSet
-            ResultSet showTimes = myStmt.executeQuery("SELECT Theater_Name, " + "Location, Title, Movie_Time FROM THEATRE NATURAL JOIN (SELECT * FROM SHOWS NATURAL JOIN MOVIE WHERE Title = '"+ movieTitle + "') AS G ORDER BY Movie_Time");
-
-            movieList.getChildren().add(new Text(movieTitle + "\n\n")); // print the title of the movie
-
-            while (showTimes.next()) {
-                movieList.getChildren().add(new Text("Time: " + showTimes.getTime("Movie_Time") +"\n" + "Theater: " + showTimes.getString("Theater_Name") + "\n" + "Showing Time: " + showTimes.getString("Location") + "\n\n"));
-            }
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        }
+//        movieList.getChildren().clear(); // clear the list the is already there
+//        try {
+//            // create the ResultSet
+//            ResultSet showTimes = myStmt.executeQuery("SELECT Theater_Name, " + "Location, Title, Movie_Time FROM THEATRE NATURAL JOIN (SELECT * FROM SHOWS NATURAL JOIN MOVIE WHERE Title = '"+ movieTitle + "') AS G ORDER BY Movie_Time");
+//
+//            movieList.getChildren().add(new Text(movieTitle + "\n\n")); // print the title of the movie
+//
+//            while (showTimes.next()) {
+//                movieList.getChildren().add(new Text("Time: " + showTimes.getTime("Movie_Time") +"\n" + "Theater: " + showTimes.getString("Theater_Name") + "\n" + "Showing Time: " + showTimes.getString("Location") + "\n\n"));
+//            }
+//        } catch (SQLException e1) {
+//            e1.printStackTrace();
+//        }
     }
 
+    // Number of tickets sold by #theater at #location??
     @FXML
-    private void searchLocations(Statement myStmt, String location) {
-        System.out.println(location);
+    private void searchEmployees(Statement myStmt, String tName, String job_type) {
         try{
-            ResultSet rs = myStmt.executeQuery("SELECT Theater_Name, Title, Movie_Time\n" +
-                    "FROM MOVIE NATURAL JOIN (\n" +
-                    "\tSELECT * \n" +
-                    "    FROM Theatre NATURAL JOIN Shows\n" +
-                    "\tWHERE Location = '" + location + "'\n" +
-                    ") AS t\n" +
-                    "ORDER BY Theater_Name, Title, Movie_Time");
 
-            movieList.getChildren().clear();
+            System.out.println(tName + " " + job_type);
+            ResultSet rs = myStmt.executeQuery("SELECT * FROM EMPLOYEE NATURAL JOIN THEATRE\n" +
+                    "WHERE Theater_Name = '" +tName + "' AND Job_Type = '" + job_type +"'");
+
+            employeeList.getChildren().clear();
             while (rs.next()) {
+                System.out.println("yesajlfkjsa");
+
+                Text t = new Text("SSN: " + rs.getString("SSN") +"\nName:"+
+                        rs.getString("Name") + "\nJob type: " + job_type +
+                        "\nTheater name:" + tName + "\n");
+                employeeList.getChildren().add(t);
             }
         }
         catch (Exception e) {
