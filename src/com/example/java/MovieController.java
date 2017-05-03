@@ -28,7 +28,7 @@ public class MovieController implements Initializable{
     Button homepageBut, movieBut, theaterBut, employeeBut, signUpBut, signInBut, searchBut;
     @FXML
     ComboBox searchChoice;
-    ObservableList<String> searchList = FXCollections.observableArrayList("Movies", "Location");
+    ObservableList<String> searchList = FXCollections.observableArrayList("Movies", "Location", "Rating");
 
     // list IDs
     @FXML
@@ -106,6 +106,10 @@ public class MovieController implements Initializable{
             searchBut.setOnAction(e -> searchLocations(myStmt, movieTitleBox.getText()));
         }
 
+        else if(searchChoice.getValue() == "Rating") {
+            searchBut.setOnAction(e -> searchRating(myStmt, movieTitleBox.getText()));
+        }
+
     }
 
     @FXML
@@ -177,6 +181,7 @@ public class MovieController implements Initializable{
     @FXML
     private void searchLocations(Statement myStmt, String location) {
         //Current movies and show times in #location
+
         try{
             ResultSet rs = myStmt.executeQuery("SELECT Theater_Name, Title, Movie_Time\n" +
                     "FROM MOVIE NATURAL JOIN (\n" +
@@ -187,7 +192,9 @@ public class MovieController implements Initializable{
                     "ORDER BY Theater_Name, Title, Movie_Time");
 
             movieList.getChildren().clear();
-
+            Text t = new Text("CURRENT MOVIES AND SHOW TIMES: " + location);
+            t.setId("fuck");
+            movieList.getChildren().add(t);
             while (rs.next()) {
                 String theaterName = rs.getString("Theater_Name");
                 String title = rs.getString("Title");
@@ -202,6 +209,30 @@ public class MovieController implements Initializable{
             e.printStackTrace();
         }
 
+    }
+
+    @FXML
+    private void searchRating(Statement myStmt, String rating) {
+        try{
+            ResultSet rs = myStmt.executeQuery("Select Title\n" +
+                    "FROM MOVIE\n" +
+                    "WHERE Rating = '" + rating + "'");
+
+            movieList.getChildren().clear();
+            Text t = new Text("ALL MOVIES RATED: " + rating);
+            t.setId("fuck");
+            movieList.getChildren().add(t);
+            while (rs.next()) {
+                String title = rs.getString("Title");
+                Hyperlink h = new Hyperlink(title); // title link
+                h.setOnAction(e -> getMovieTimes(myStmt, title));
+                movieList.getChildren().add(h);
+
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
