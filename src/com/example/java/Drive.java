@@ -7,8 +7,8 @@ public class Drive {
     public static Connection Connect(){
 
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/sys" +
-                    "?user=root&password=2010rockS&useSSL=false");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/movie_db" +
+                    "?user=root&password=lexanne23&useSSL=false");
             return conn;
         }
         catch (Exception e) {
@@ -42,9 +42,14 @@ public class Drive {
             }
 
             // Query 2. Available movie times for 'Get Out' movie
+            String G = "Get Out";
             ResultSet movieTimes = myStmt.executeQuery("SELECT Theater_Name, Location, Title, Movie_Time\n" +
                     "FROM THEATRE NATURAL JOIN (SELECT * FROM SHOWS NATURAL JOIN " +
-                    "MOVIE WHERE Title = 'Get Out') AS G ORDER BY Movie_Time");
+                    "MOVIE WHERE Title = '" + G + "'" + ") AS G ORDER BY Movie_Time");
+
+        /*    PreparedStatement stmt = myConn.Connect().prepareStatement();
+            stmt.setString(1, poster);
+            ResultSet rs = stmt.executeQuery();*/
 
             System.out.println("\n\n");
             System.out.println("Available movie times for 'Get Out' movie");
