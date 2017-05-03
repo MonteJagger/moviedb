@@ -58,7 +58,7 @@
                <content>
                   <AnchorPane>
                      <children>
-                        <ImageView fitHeight="1772.0" fitWidth="893.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="1772.0" fitWidth="893.0" layoutX="14.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@spiderman.jpg" />
                            </image>
