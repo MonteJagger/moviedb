@@ -31,8 +31,7 @@ public class EmployeeController implements Initializable{
     @FXML
     Button homepageBut, movieBut, theaterBut, employeeBut, signUpBut, signInBut, searchBut;
     @FXML
-    ComboBox theaterChoice;
-    ComboBox jobTypeChoice;
+    ComboBox theaterChoice, jobTypeChoice;
     ObservableList<String> theaterDrop = FXCollections.observableArrayList("AMC", "Cinemark",
             "Tinseltown", "Studio Movie Grill", "Alamo", "Look", "Rave");
     ObservableList<String> jobTypeDrop = FXCollections.observableArrayList("Ticket Seller",
@@ -86,7 +85,6 @@ public class EmployeeController implements Initializable{
         System.out.println("Loading...");
         theaterChoice.setItems(theaterDrop);
 //        jobTypeChoice.setItems(jobTypeDrop);
-
     }
 
     // MOVIE PAGE FUNCTIONS
@@ -94,9 +92,7 @@ public class EmployeeController implements Initializable{
     private void handleEmployeePage(ActionEvent event) throws IOException, SQLException {
         Drive myConn = new Drive(); // check connection
         Statement myStmt = myConn.Connect().createStatement(); // write query
-        employeeBut.setOnAction(e -> allEmployees(myStmt));
-        //Search for a employee
-        searchBut.setOnAction(e -> searchMovie(myStmt, employeeTitleBox.getText()));
+
 
 
     }
