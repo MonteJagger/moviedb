@@ -7,8 +7,8 @@ public class Drive {
     public static Connection Connect(){
 
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/sys" +
-                    "?user=root&password=2010rockS&useSSL=false");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/MOVIE_DB" +
+                    "?user=root&password=lexanne23&useSSL=false");
             return conn;
         }
         catch (Exception e) {

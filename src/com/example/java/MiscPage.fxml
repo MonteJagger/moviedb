@@ -70,26 +70,11 @@
             </HBox>
             <HBox prefWidth="200.0" spacing="10.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of tickets sold by ">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Movies with the most ticket sales">
                      <HBox.margin>
                         <Insets top="10.0" />
                      </HBox.margin>
                   </Text>
-                  <TextField fx:id="tixSoldTheaterText" promptText="Type theater name">
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="at">
-                     <HBox.margin>
-                        <Insets top="10.0" />
-                     </HBox.margin>
-                  </Text>
-                  <TextField fx:id="tixSoldLocationText" layoutX="192.0" layoutY="15.0" promptText="Type location">
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </TextField>
                   <Button fx:id="searchNumTickets" mnemonicParsing="false" text="Search">
                      <HBox.margin>
                         <Insets top="5.0" />
@@ -101,60 +86,11 @@
                </VBox.margin>
             </HBox>
             <HBox prefWidth="200.0" spacing="10.0">
-               <children>
-                  <TextField fx:id="numEmpInt" prefHeight="27.0" prefWidth="202.0" promptText="Enter number of employees">
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="in">
-                     <HBox.margin>
-                        <Insets top="10.0" />
-                     </HBox.margin>
-                  </Text>
-                  <TextField fx:id="numEmpTheaterText" promptText="Type theater name">
-                     <HBox.margin>
-                        <Insets left="12.0" top="5.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="at">
-                     <HBox.margin>
-                        <Insets top="10.0" />
-                     </HBox.margin>
-                  </Text>
-                  <TextField fx:id="numEmpLocateText" layoutX="192.0" layoutY="15.0" promptText="Type location">
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Button fx:id="searchNumEmployees" mnemonicParsing="false" text="Search">
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
                <VBox.margin>
                   <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
                </VBox.margin>
             </HBox>
             <HBox layoutX="30.0" layoutY="140.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Number of seats left for ">
-                     <HBox.margin>
-                        <Insets top="10.0" />
-                     </HBox.margin>
-                  </Text>
-                  <TextField fx:id="numSeatsText" promptText="Type movie title">
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Button fx:id="searchNumSeats" mnemonicParsing="false" text="Search">
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
                <VBox.margin>
                   <Insets bottom="5.0" left="20.0" right="5.0" top="5.0" />
                </VBox.margin>
