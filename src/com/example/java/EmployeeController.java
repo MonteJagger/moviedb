@@ -107,8 +107,22 @@ public class EmployeeController implements Initializable{
         String userSearch = employeeTitleBox.getText();
         String userTheaterChoice = (String) theaterChoice.getValue();
         String userJobChoice = (String) jobTypeChoice.getValue();
-        searchBut.setOnAction(e -> searchEmployees(myStmt, userTheaterChoice, userJobChoice, userSearch));
+
+        System.out.println(userSearch + "\t" + userTheaterChoice + "\t" + userJobChoice + ".space");
+
+        if (userSearch != null && !userSearch.isEmpty())
+        {
+            System.out.println("execute");
+            searchBut.setOnAction(e -> searchEmployeeName(myStmt, employeeTitleBox.getText()));
+        }
+        else if ( !(userTheaterChoice==null || userTheaterChoice.equals("Select Theater")) && !
+                (userJobChoice==null || userJobChoice.equals("Select Job Type")) && userSearch.equals("")) {
+            searchBut.setOnAction(e -> searchEmployeesInfo(myStmt, userTheaterChoice, userJobChoice,
+                    userSearch));
+        }
     }
+
+
 
     @FXML
     private void allEmployees(Statement myStmt) {
@@ -124,77 +138,51 @@ public class EmployeeController implements Initializable{
         catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
-    @FXML
-    private void searchMovie(Statement myStmt, String employee) {
-//        try {
-//            ResultSet chosenTheater = myStmt.executeQuery("SELECT Title, Rating, Release_Date\n" +
-//                    "FROM MOVIE\n" +
-//                    "WHERE Title = '" + movie + "'");
-//
-//            theaterList.getChildren().clear();
-//            while (chosenTheater.next()) {
-//                String title = chosenTheater.getString("Theater_Name");
-//                Hyperlink h = new Hyperlink(title); // title link
-//                h.setOnAction(e -> getTheaterShowings(myStmt, title));
-//                Text t = new Text("\nRated: " + chosenTheater.getString("Rating") + "\nReleased: " +
-//                        chosenTheater.getDate("Release_Date"));
-//                h.setId(title);
-//                Button deleteBut = new Button("Delete");
-//                movieList.getChildren().addAll(h, t, deleteBut,
-//                        new Text("\n-----------------------------------------------------------------------------------------------------"));
-//            }
-//        }
-//        catch (Exception e) {
-//            e.printStackTrace();
-//        }
-    }
+    private void searchEmployeeName(Statement myStmt, String name) {
+        System.out.println("works");
+            try {
+                ResultSet rs = myStmt.executeQuery("SELECT * FROM EMPLOYEE NATURAL JOIN THEATRE " +
+                        "WHERE Name = '" + name + "'");
+                employeeList.getChildren().clear();
+                Text title = new Text("Employees that named '" + name + "'\n");
+                title.setId("fuck");
+                employeeList.getChildren().add(title);
+                while (rs.next()) {
+                    Text t = new Text("SSN: " + rs.getString("SSN") + "\nName: " + rs.getString("Name")
+                            + "\nJob type: " + rs.getString("Job_Type") + "\nTheater name: " + rs.getString("Theater_Name")+
+                            "\n");
+                    employeeList.getChildren().add(t);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
 
-    private void getTheaterShowings(Statement myStmt, String movieTitle){
-//        movieList.getChildren().clear(); // clear the list the is already there
-//        try {
-//            // create the ResultSet
-//            ResultSet showTimes = myStmt.executeQuery("SELECT Theater_Name, " + "Location, Title, Movie_Time FROM THEATRE NATURAL JOIN (SELECT * FROM SHOWS NATURAL JOIN MOVIE WHERE Title = '"+ movieTitle + "') AS G ORDER BY Movie_Time");
-//
-//            movieList.getChildren().add(new Text(movieTitle + "\n\n")); // print the title of the movie
-//
-//            while (showTimes.next()) {
-//                movieList.getChildren().add(new Text("Time: " + showTimes.getTime("Movie_Time") +"\n" + "Theater: " + showTimes.getString("Theater_Name") + "\n" + "Showing Time: " + showTimes.getString("Location") + "\n\n"));
-//            }
-//        } catch (SQLException e1) {
-//            e1.printStackTrace();
-//        }
     }
 
     // Number of tickets sold by #theater at #location??
-    @FXML
-    private void searchEmployees(Statement myStmt, String tName, String job_type, String
-            userSearch) {
+    private void searchEmployeesInfo(Statement myStmt, String tName, String job_type, String userSearch){
+        System.out.println(".space");
+        // the user selects both drop downs and the leaves the text field blank
 
-        if ((tName != null || tName.equals("Select Theater")) && (job_type != null || job_type.equals("Select Job Type")) && userSearch != null) {
+            System.out.println(tName + " " + job_type);
+            ResultSet rs = null;
             try {
-                System.out.println(tName + " " + job_type);
-                ResultSet rs = myStmt.executeQuery("SELECT * FROM EMPLOYEE NATURAL JOIN THEATRE\n" +
+                rs = myStmt.executeQuery("SELECT * FROM EMPLOYEE NATURAL JOIN THEATRE\n" +
                         "WHERE Theater_Name = '" + tName + "' AND Job_Type = '" + job_type + "'");
-
                 employeeList.getChildren().clear();
+                Text title = new Text("Employees that work at '"+ tName + "' "+ "and has job type" + " " + "'" + job_type + "'\n");
+                title.setId("fuck");
+                employeeList.getChildren().add(title);
                 while (rs.next()) {
                     Text t = new Text("SSN: " + rs.getString("SSN") + "\nName: " + rs.getString("Name")
                             + "\nJob type: " + job_type + "\nTheater name: " + tName + "\n");
                     employeeList.getChildren().add(t);
                 }
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-        else if (userSearch != null) {
-//            ResultSet rs = myStmt.executeQuery("SELECT * FROM EMPLOYEE NATURAL JOIN THEATRE\n" +
-//                    "WHERE Theater_Name = '" + tName + "' AND Job_Type = '" + job_type + "'");
-            System.out.println("fuck");
-        }
-        else System.out.println("fuck you");
     }
 }
 
