@@ -10,7 +10,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -32,10 +31,11 @@ public class EmployeeController implements Initializable{
     Button homepageBut, movieBut, theaterBut, employeeBut, signUpBut, signInBut, searchBut;
     @FXML
     ComboBox theaterChoice, jobTypeChoice;
-    ObservableList<String> theaterDrop = FXCollections.observableArrayList("AMC", "Cinemark",
-            "Tinseltown", "Studio Movie Grill", "Alamo", "Look", "Rave");
-    ObservableList<String> jobTypeDrop = FXCollections.observableArrayList("Ticket Seller",
-            "Usher", "Manager", "Concession");
+
+    ObservableList<String> theaterDrop = FXCollections.observableArrayList("Select Theater", "AMC",
+            "Cinemark", "Tinseltown", "Studio Movie Grill", "Alamo", "Look", "Rave");
+    ObservableList<String> jobTypeDrop = FXCollections.observableArrayList("Select Job Type","Ticket " +
+            "Seller", "Usher", "Manager", "Concession");
 
     // list IDs
     @FXML
@@ -104,11 +104,10 @@ public class EmployeeController implements Initializable{
         Statement myStmt = myConn.Connect().createStatement(); // write query
         employeeBut.setOnAction(e -> allEmployees(myStmt));
 
-        if (theaterChoice.getValue() != null && jobTypeChoice.getValue() != null) {
-            String userTheaterChoice = (String) theaterChoice.getValue();
-            String userJobChoice = (String) jobTypeChoice.getValue();
-            searchBut.setOnAction(e -> searchEmployees(myStmt, userTheaterChoice, userJobChoice));
-        }
+        String userSearch = employeeTitleBox.getText();
+        String userTheaterChoice = (String) theaterChoice.getValue();
+        String userJobChoice = (String) jobTypeChoice.getValue();
+        searchBut.setOnAction(e -> searchEmployees(myStmt, userTheaterChoice, userJobChoice, userSearch));
     }
 
     @FXML
@@ -117,7 +116,7 @@ public class EmployeeController implements Initializable{
             ResultSet rs = myStmt.executeQuery("SELECT * " + "FROM EMPLOYEE");
             employeeList.getChildren().clear();
             while (rs.next()) {
-                Text t = new Text("SSN: " + rs.getString("SSN") +"\nName:"+
+                Text t = new Text("SSN: " + rs.getString("SSN") +"\nName: "+
                         rs.getString("Name") + "\nJob type: " + rs.getString("Job_Type")+ "\n");
                 employeeList.getChildren().add(t);
             }
@@ -171,26 +170,31 @@ public class EmployeeController implements Initializable{
 
     // Number of tickets sold by #theater at #location??
     @FXML
-    private void searchEmployees(Statement myStmt, String tName, String job_type) {
-        try{
+    private void searchEmployees(Statement myStmt, String tName, String job_type, String
+            userSearch) {
 
-            System.out.println(tName + " " + job_type);
-            ResultSet rs = myStmt.executeQuery("SELECT * FROM EMPLOYEE NATURAL JOIN THEATRE\n" +
-                    "WHERE Theater_Name = '" +tName + "' AND Job_Type = '" + job_type +"'");
+        if ((tName != null || tName.equals("Select Theater")) && (job_type != null || job_type.equals("Select Job Type")) && userSearch != null) {
+            try {
+                System.out.println(tName + " " + job_type);
+                ResultSet rs = myStmt.executeQuery("SELECT * FROM EMPLOYEE NATURAL JOIN THEATRE\n" +
+                        "WHERE Theater_Name = '" + tName + "' AND Job_Type = '" + job_type + "'");
 
-            employeeList.getChildren().clear();
-            while (rs.next()) {
-                System.out.println("yesajlfkjsa");
-
-                Text t = new Text("SSN: " + rs.getString("SSN") +"\nName:"+
-                        rs.getString("Name") + "\nJob type: " + job_type +
-                        "\nTheater name:" + tName + "\n");
-                employeeList.getChildren().add(t);
+                employeeList.getChildren().clear();
+                while (rs.next()) {
+                    Text t = new Text("SSN: " + rs.getString("SSN") + "\nName: " + rs.getString("Name")
+                            + "\nJob type: " + job_type + "\nTheater name: " + tName + "\n");
+                    employeeList.getChildren().add(t);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        catch (Exception e) {
-            e.printStackTrace();
+        else if (userSearch != null) {
+//            ResultSet rs = myStmt.executeQuery("SELECT * FROM EMPLOYEE NATURAL JOIN THEATRE\n" +
+//                    "WHERE Theater_Name = '" + tName + "' AND Job_Type = '" + job_type + "'");
+            System.out.println("fuck");
         }
+        else System.out.println("fuck you");
     }
 }
 
