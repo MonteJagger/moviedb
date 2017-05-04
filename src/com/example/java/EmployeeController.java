@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
 public class EmployeeController implements Initializable{
     // button IDs
     @FXML
-    Button homepageBut, movieBut, theaterBut, employeeBut, signUpBut, signInBut, searchBut;
+    Button homepageBut, movieBut, theaterBut, employeeBut, miscBut, signUpBut, signInBut, searchBut;
     @FXML
     ComboBox theaterChoice, jobTypeChoice;
 
@@ -66,6 +66,9 @@ public class EmployeeController implements Initializable{
             // employees.fxml
             stage = (Stage) employeeBut.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("employee.fxml"));
+        } else if (event.getSource() == miscBut) {// if misc. butt is clicked go to miscPage.fxml
+            stage = (Stage) miscBut.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("miscPage.fxml"));
         } else if (event.getSource() == signInBut) { // if signIn butt is clicked go to movieInfo
             // signIn.fxml
             stage = (Stage) signInBut.getScene().getWindow();

@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 public class MovieController implements Initializable{
     // button IDs
     @FXML
-    Button homepageBut, movieBut, theaterBut, employeeBut, signUpBut, signInBut, searchBut;
+    Button homepageBut, movieBut, theaterBut, employeeBut, miscBut, signUpBut, signInBut, searchBut;
     @FXML
     ComboBox searchChoice;
     ObservableList<String> searchList = FXCollections.observableArrayList("Movies", "Location", "Rating");
@@ -59,6 +59,9 @@ public class MovieController implements Initializable{
             // employees.fxml
             stage = (Stage) employeeBut.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("employee.fxml"));
+        } else if (event.getSource() == miscBut) {// if misc. butt is clicked go to miscPage.fxml
+            stage = (Stage) miscBut.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("miscPage.fxml"));
         } else if (event.getSource() == signInBut) { // if signIn butt is clicked go to movieInfo
             // signIn.fxml
             stage = (Stage) signInBut.getScene().getWindow();
@@ -140,8 +143,7 @@ public class MovieController implements Initializable{
     private void searchMovie(Statement myStmt, String movie) {
         try {
             ResultSet chosenMovie = myStmt.executeQuery("SELECT Title, Rating, Release_Date\n" +
-                    "FROM MOVIE\n" +
-                    "WHERE Title = '" + movie + "'");
+                    "FROM MOVIE\n" + "WHERE Title = '" + movie + "'");
 
             movieList.getChildren().clear();
             while (chosenMovie.next()) {

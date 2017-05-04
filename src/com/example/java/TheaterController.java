@@ -41,7 +41,7 @@ public class TheaterController implements Initializable {
     ObservableList<String> searchList = FXCollections.observableArrayList("Theaters", "Location");
 
     @FXML
-    Button homepageBut, movieBut, theaterBut, employeeBut, signUpBut, signInBut, searchBut;
+    Button homepageBut, movieBut, theaterBut, employeeBut, signUpBut, miscBut, signInBut, searchBut;
 
     @FXML
     private void handleButtonAction(ActionEvent event) throws IOException, SQLException {
@@ -64,6 +64,11 @@ public class TheaterController implements Initializable {
             // employees.fxml
             stage = (Stage) employeeBut.getScene().getWindow();
             root = FXMLLoader.load(getClass().getResource("employee.fxml"));
+
+        } else if (event.getSource() == miscBut) {// if misc. butt is clicked go to
+            // employees.fxml
+            stage = (Stage) miscBut.getScene().getWindow();
+            root = FXMLLoader.load(getClass().getResource("miscPage.fxml"));
         } else if (event.getSource() == signInBut) { // if signIn butt is clicked go to movieInfo
             // signIn.fxml
             stage = (Stage) signInBut.getScene().getWindow();
